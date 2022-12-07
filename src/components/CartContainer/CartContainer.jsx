@@ -1,8 +1,12 @@
 import React from 'react'
+import CartWidget from '../CartWidget/CartWidget'
 
 const CartContainer = () => {
   return (
-    <div>CartContainer</div>
+    <div> 
+      <CartWidget/>
+      <div>4</div>
+    </div>
   )
 }
 

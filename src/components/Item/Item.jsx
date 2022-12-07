@@ -12,8 +12,8 @@ const Item = ({ product }) => {
                 {`${product.nombre} - ${product.categoria}`}
             </div>
             <div className="card-body">
-                <img src="{product.foto}" alt="" className='w-50' />
-                {product.precio}
+                <img src={`${product.foto}`} alt="" className='w-50' />
+                <b>${product.precio}</b>
             </div>
         <div className="card-footer">
             <Link to={`/detalle/${product.id}`}>

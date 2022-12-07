@@ -8,7 +8,7 @@ import Title from "../Title/Title"
 const Logo = () => {
     return(
     <div>
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTT4LMyPjeMbIZngFO_WfRBOvEl7ACiK5kmw&usqp=CAU" alt="logo"/>
+      <img src="/public/logopeque.png" alt="logo"/>
     </div>)
   }
 
@@ -16,7 +16,6 @@ const ItemListContainer = ({greeting}) => {
   const [products, setProduct] = useState([])  
   const [loading, setLoading] = useState(true)
   const {id} = useParams()
-  console.log(id)
 
   useEffect(()=>{
     if (id) {
