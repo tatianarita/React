@@ -6,3 +6,5 @@ function Title (props) {
             <h3>{props.subtitulo}</h3>
         </div>
 )}
+
+export default Title
