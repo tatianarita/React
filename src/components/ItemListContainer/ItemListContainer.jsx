@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import gFetch from "../../helpers/gFetch"
+import { collection, query, where, getDocs, getFirestore } from "firebase/firestore"
 import ItemList from "../ItemList/ItemList"
 import Title from "../Title/Title"
+import Loading from "../Loading/Loading"
 
 
 const Logo = () => {
@@ -13,23 +14,20 @@ const Logo = () => {
   }
 
 const ItemListContainer = ({greeting}) => {
-  const [products, setProduct] = useState([])  
+  const [products, setProducts] = useState([]) 
   const [loading, setLoading] = useState(true)
   const {id} = useParams()
+  console.log('itemListContainer')
 
   useEffect(()=>{
-    if (id) {
-      gFetch()
-      .then(data => setProduct(data.filter(prod => prod.categoria === id)))
-      .catch(err => console.log(err))
-      .finally(()=> setLoading(false))
+      const db = getFirestore ()
+      const queryCollection = collection (db, 'products')
+      const queryFiltrada = id ? query (queryCollection, where ('categoria', '==',id)) : queryCollection
       
-    } else{
-      gFetch()
-      .then(data => setProduct(data))
-      .catch(err => console.log(err))
-      .finally(()=> setLoading(false))
-    }
+        getDocs (queryFiltrada)
+        .then (data => setProducts(data.docs.map (product =>({ id:product.id, ...product.data() }))))
+        .catch(err=> console.log(err))
+        .finally(()=> setLoading(false))
   }, [id])
   
   return (
@@ -40,12 +38,11 @@ const ItemListContainer = ({greeting}) => {
       subtitulo='VIbra VERde'/>
       <p>{greeting}</p>
 
-    {loading ?
-        <h2>loading ...</h2>
-      :   
-        <ItemList products={products}/>
-      }
-    
+        {loading ?
+            <Loading/>
+          :   
+            <ItemList products={products}/>
+        }
     </div>
   )
 }

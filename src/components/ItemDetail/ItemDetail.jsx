@@ -1,9 +1,17 @@
 import React from 'react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useCartContext } from '../../context/CartContext'
 import ItemCount from '../ItemCount/ItemCount'
 
 const ItemDetail = ({product}) => {
+    const [isCant, setIsCant] = useState (false)
+    const {agregarCarrito} = useCartContext()
+
     const onAdd = (cant) => {
         console.log('seleccionaste: ', cant)
+        agregarCarrito({ ...product, cant })
+        setIsCant(true)
     }
   return (
     <div className='container border border-3 border-primary rounded'>
@@ -15,11 +23,22 @@ const ItemDetail = ({product}) => {
                 <h4>Precio: {product.precio}</h4>
             </div>
             <div className='col'>
-                <ItemCount
-                    stock={10}
-                    initial={1}
-                    onAdd={onAdd}
-                />
+                {isCant ?
+                    <>
+                    <Link to= '/carrito'>
+                    <button className='btn btn-primary'>Ir al carrito</button>
+                    </Link>
+                    <Link to= '/'>
+                    <button className='btn btn-primary'>Seguir comprando</button>
+                    </Link>
+                    </>
+                :
+                    <ItemCount
+                        stock={10}
+                        initial={1}
+                        onAdd={onAdd}
+                    />
+                }
             </div>
 
         </div>
