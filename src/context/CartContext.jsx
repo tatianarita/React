@@ -2,19 +2,21 @@ import React, { createContext } from 'react'
 import { useState } from 'react'
 import { useContext } from 'react'
 
-const CartContext = createContext([]) 
+export const CartContext = createContext([]) 
 export const useCartContext = () => useContext(CartContext)
 
 export const CartContextProvider = ({children}) => {
     const [cartList, setCartList] = useState([])
-    const IsInCart = () => cartList.findIndex(product => product.id === product.id)
+    
     const agregarCarrito = (product) =>{
-        const idx = IsInCart ()
-        if (idx !== -1){
+        const idx = cartList.findIndex(objeto => objeto.id === product.id)
+        
+        if (idx === -1){
+            setCartList([...cartList, product])
+        }else {
+        
             cartList[idx].cant += product.cant
             setCartList([...cartList])
-        }else {
-        setCartList([...cartList, product])
     }}
 
 const precioTotal = () => cartList.reduce((contador,product)=> contador += (product.precio * product.cant), 0)

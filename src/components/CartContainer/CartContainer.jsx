@@ -25,8 +25,6 @@ const CartContainer = () => {
       .then(resp => console.log(resp))
       .catch(err=> console.log(err))
       .finally(()=> vaciarCarrito())
-
-  console.log('actualizado!')
 }
 
 const handleOnChange=(e)=>{
@@ -39,7 +37,7 @@ console.log(dataForm)
   
 return (
     <div>
-      {cartList.lenght !== 0 ?
+      {cartList.length !== 0 ?
       <>
       {cartList.map(product => <div key={product.id}>
                           <div className='w-50'>
@@ -75,11 +73,11 @@ return (
                         <button className= "btn-btn-danger" onClick={vaciarCarrito} >Vaciar Carrito</button>
        </>
        :
-       <>
-       <h2>No hay contenido en su carrito</h2>
-       <Link to= '/'>Productos</Link>
-       </> 
-       } 
+        <>
+        <h2>No hay contenido en su carrito</h2>
+        <Link to= '/'>Productos</Link>
+        </> 
+      } 
     </div>
   )
 }

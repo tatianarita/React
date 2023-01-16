@@ -1,18 +1,20 @@
-import React from 'react'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useCartContext } from '../../context/CartContext'
+import { React, useContext, useState  } from 'react'
 import ItemCount from '../ItemCount/ItemCount'
+import { CartContext } from '../../context/CartContext'
+
 
 const ItemDetail = ({product}) => {
     const [isCant, setIsCant] = useState (false)
-    const {agregarCarrito} = useCartContext()
+    const {cartList, agregarCarrito} = useContext(CartContext)
 
     const onAdd = (cant) => {
         console.log('seleccionaste: ', cant)
         agregarCarrito({ ...product, cant })
         setIsCant(true)
     }
+    console.log(cartList)
+
   return (
     <div className='container border border-3 border-primary rounded'>
         <div className='row'>
@@ -34,7 +36,7 @@ const ItemDetail = ({product}) => {
                     </>
                 :
                     <ItemCount
-                        stock={10}
+                        stock={product.stock}
                         initial={1}
                         onAdd={onAdd}
                     />
