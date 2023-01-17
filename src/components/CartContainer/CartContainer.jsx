@@ -1,24 +1,24 @@
 import { addDoc, collection, getFirestore } from 'firebase/firestore'
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCartContext } from '../../context/CartContext'
+import swal from 'sweetAlert'
 
 const CartContainer = () => {
   const[ dataForm, setFormData] = useState({
-    Nombre:'',
-    Email:'',
-    Teléfono:''
+    nombre:'',
+    email:'',
+    confirmaemail: '',
+    telefono:''
   })
   const { cartList, vaciarCarrito, precioTotal, eliminarProd} = useCartContext()
-  console.log(cartList)
 
   const addOrder = (e)=>{
     e.preventDefault()
     const order = {}
     order.buyer= dataForm
     order.price= precioTotal()
-    order.items= cartList.map(({id,precio,nombre})=>({id,precio,nombre}))
+    order.items= cartList.map(({id,precio,nombre,cant})=>({id,precio,nombre,cant}))
     const db = getFirestore()
     const queryCollection = collection(db, 'orders')
     addDoc(queryCollection, order)
@@ -26,14 +26,15 @@ const CartContainer = () => {
       .catch(err=> console.log(err))
       .finally(()=> vaciarCarrito())
 }
-
+const compraexitosa = () =>{
+  swal('Su compra ha sido realizada!')
+}
 const handleOnChange=(e)=>{
   setFormData({
     ...dataForm,
     [e.target.name]:e.target.value
   })
 }
-console.log(dataForm)
   
 return (
     <div>
@@ -52,24 +53,31 @@ return (
                         <form onSubmit={addOrder}>
                         <input type="text" 
                         onChange={handleOnChange}
-                        name='Nombre'
-                        value={dataForm.usuario}
+                        name='nombre'
+                        value={dataForm.nombre}
                         placeholder="ingrese su nombre"
                         />  
-                        <input type="number" 
-                        onChange={handleOnChange}
-                        name='teléfono'
-                        value={dataForm.tel}
-                        placeholder="ingrese su teléfono"
-                        /> 
                         <input type="text" 
                         onChange={handleOnChange}
                         name='email'
                         value={dataForm.email}
                         placeholder="ingrese su mail"
                         /> 
-                        <button className='btn btn-outline-success'>Finalizar compra</button>
+                        <input type="text" 
+                        onChange={handleOnChange}
+                        name='confirmaemail'
+                        value={dataForm.confirmaemail}
+                        placeholder="confirme su mail"
+                        />    
+                        <input type="number" 
+                        onChange={handleOnChange}
+                        name='telefono'
+                        value={dataForm.telefono}
+                        placeholder="ingrese su teléfono"
+                        />
+                        <button className='btn btn-outline-success' onClick={compraexitosa}>Finalizar compra</button>
                         </form>
+                        
                         <button className= "btn-btn-danger" onClick={vaciarCarrito} >Vaciar Carrito</button>
        </>
        :

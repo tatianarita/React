@@ -6,14 +6,12 @@ import { CartContext } from '../../context/CartContext'
 
 const ItemDetail = ({product}) => {
     const [isCant, setIsCant] = useState (false)
-    const {cartList, agregarCarrito} = useContext(CartContext)
+    const {agregarCarrito} = useContext(CartContext)
 
     const onAdd = (cant) => {
-        console.log('seleccionaste: ', cant)
         agregarCarrito({ ...product, cant })
         setIsCant(true)
     }
-    console.log(cartList)
 
   return (
     <div className='container border border-3 border-primary rounded'>
