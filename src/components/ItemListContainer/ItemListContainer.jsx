@@ -9,7 +9,7 @@ import Loading from "../Loading/Loading"
 const Logo = () => {
     return(
     <div>
-      <img src="/public/logopeque.png" alt="logo"/>
+      <img src="/logopeque/.png" alt="logo"/>
     </div>)
   }
 
