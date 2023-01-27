@@ -2,7 +2,7 @@ import { addDoc, collection, getFirestore } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCartContext } from '../../context/CartContext'
-import swal from 'sweetAlert'
+
 
 const CartContainer = () => {
   const[ dataForm, setFormData] = useState({
@@ -11,6 +11,7 @@ const CartContainer = () => {
     confirmaemail: '',
     telefono:''
   })
+  const [nroCompra, setNroCompra] = useState('')
   const { cartList, vaciarCarrito, precioTotal, eliminarProd} = useCartContext()
 
   const addOrder = (e)=>{
@@ -21,14 +22,21 @@ const CartContainer = () => {
     order.items= cartList.map(({id,precio,nombre,cant})=>({id,precio,nombre,cant}))
     const db = getFirestore()
     const queryCollection = collection(db, 'orders')
+    
+    if ((dataForm.email !== dataForm.confirmaemail) || (dataForm.nombre.length == 0) || (dataForm.telefono.length == 0)){ 
+      alert ('Debe completar sus datos para avanzar');
+      return
+    }
+    function compra (order) {
+      setNroCompra(`Su Nro de compra es: ${order.id}`)
+    }
+
     addDoc(queryCollection, order)
-      .then(resp => console.log(resp))
+      .then(order => {compra(order)})
       .catch(err=> console.log(err))
       .finally(()=> vaciarCarrito())
 }
-const compraexitosa = () =>{
-  swal('Su compra ha sido realizada!')
-}
+
 const handleOnChange=(e)=>{
   setFormData({
     ...dataForm,
@@ -75,7 +83,7 @@ return (
                         value={dataForm.telefono}
                         placeholder="ingrese su teléfono"
                         />
-                        <button className='btn btn-outline-success' onClick={compraexitosa}>Finalizar compra</button>
+                        <button className='btn btn-outline-success'>Finalizar compra</button>
                         </form>
                         
                         <button className= "btn-btn-danger" onClick={vaciarCarrito} >Vaciar Carrito</button>
@@ -83,6 +91,7 @@ return (
        :
         <>
         <h2>No hay contenido en su carrito</h2>
+        <p>{nroCompra}</p>
         <Link to= '/'>Productos</Link>
         </> 
       } 
