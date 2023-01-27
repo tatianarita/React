@@ -28,7 +28,7 @@ const CartContainer = () => {
       return
     }
     function compra (order) {
-      setNroCompra(`Su Nro de compra es: ${order.id}`)
+      setNroCompra(`Gracias ${dataForm.nombre}! Su Nro de compra es: ${order.id}`)
     }
 
     addDoc(queryCollection, order)
